@@ -1,12 +1,44 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import Navigation from "@/components/Navigation";
+import ScrollProgress from "@/components/ScrollProgress";
+import Hero from "@/components/Hero";
+import JourneyMap from "@/components/JourneyMap";
+import DayItinerary from "@/components/DayItinerary";
+import FoodCulture from "@/components/FoodCulture";
+import PracticalInfo from "@/components/PracticalInfo";
+import PhotoGallery from "@/components/PhotoGallery";
+import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      <ScrollProgress />
+      <Navigation />
+      
+      <main>
+        <Hero />
+        
+        <section id="journey">
+          <JourneyMap />
+        </section>
+        
+        <section id="itinerary">
+          <DayItinerary />
+        </section>
+        
+        <section id="food">
+          <FoodCulture />
+        </section>
+        
+        <section id="plan">
+          <PracticalInfo />
+        </section>
+        
+        <section id="gallery">
+          <PhotoGallery />
+        </section>
+      </main>
+      
+      <Footer />
     </div>
   );
 };
