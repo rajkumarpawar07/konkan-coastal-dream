@@ -1,26 +1,16 @@
 import { motion } from "framer-motion";
-import { MapPin, Navigation, Waves, Mountain, Ship } from "lucide-react";
+import { Navigation, MapPin } from "lucide-react";
 
-interface Destination {
-  id: string;
-  name: string;
-  day: number;
-  x: number;
-  y: number;
-  description: string;
-  type: "city" | "fort" | "beach" | "temple";
-}
-
-const destinations: Destination[] = [
-  { id: "kolhapur", name: "Kolhapur", day: 1, x: 15, y: 25, description: "Heritage & Spirituality", type: "temple" },
-  { id: "panhala", name: "Panhala Fort", day: 2, x: 20, y: 35, description: "Maratha Stronghold", type: "fort" },
-  { id: "malvan", name: "Malvan", day: 3, x: 35, y: 55, description: "Seafood Capital", type: "city" },
-  { id: "sindhudurg", name: "Sindhudurg", day: 3, x: 40, y: 60, description: "Island Fortress", type: "fort" },
-  { id: "tarkarli", name: "Tarkarli", day: 4, x: 45, y: 68, description: "Scuba Paradise", type: "beach" },
-  { id: "devbaug", name: "Devbaug", day: 4, x: 50, y: 72, description: "River Meets Sea", type: "beach" },
-  { id: "vijaydurg", name: "Vijaydurg", day: 5, x: 60, y: 55, description: "Gibraltar of East", type: "fort" },
-  { id: "ratnagiri", name: "Ratnagiri", day: 5, x: 70, y: 45, description: "Coastal Heritage", type: "city" },
-  { id: "ganpatipule", name: "Ganpatipule", day: 6, x: 80, y: 35, description: "Sacred Shore", type: "temple" },
+const destinations = [
+  { name: "Kolhapur", day: 1, description: "Heritage & Spirituality", type: "temple" },
+  { name: "Panhala Fort", day: 2, description: "Maratha Stronghold", type: "fort" },
+  { name: "Malvan", day: 3, description: "Seafood Capital", type: "city" },
+  { name: "Sindhudurg", day: 3, description: "Island Fortress", type: "fort" },
+  { name: "Tarkarli", day: 4, description: "Scuba Paradise", type: "beach" },
+  { name: "Devbaug", day: 4, description: "River Meets Sea", type: "beach" },
+  { name: "Vijaydurg", day: 5, description: "Gibraltar of East", type: "fort" },
+  { name: "Ratnagiri", day: 5, description: "Coastal Heritage", type: "city" },
+  { name: "Ganpatipule", day: 6, description: "Sacred Shore", type: "temple" },
 ];
 
 const typeColors = {
@@ -31,6 +21,12 @@ const typeColors = {
 };
 
 const JourneyMap = () => {
+  // Google Maps embed URL with route through all destinations
+  const googleMapsEmbedUrl = `https://www.google.com/maps/embed?pb=!1m76!1m12!1m3!1d971095.3799635898!2d73.30766347812498!3d16.70595!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m61!3e0!4m5!1s0x3bc1001f94c4a9c7%3A0x886c8eb14c0f4a2e!2sKolhapur%2C%20Maharashtra!3m2!1d16.7049873!2d74.2432527!4m5!1s0x3bc1784aafc49d2d%3A0x4d3a7f4c1f5a7e5b!2sPanhala%20Fort%2C%20Maharashtra!3m2!1d16.8119444!2d74.1088889!4m5!1s0x3bc00c33e2fcf7ed%3A0x8b8b8f1f5c8e8f1f!2sMalvan%2C%20Maharashtra!3m2!1d16.0606889!2d73.4612859!4m5!1s0x3bc00c2a1c1c1c1c%3A0x1c1c1c1c1c1c1c1c!2sSindhudurg%20Fort%2C%20Malvan!3m2!1d16.0486!2d73.4594!4m5!1s0x3bc00de68b1f1f1f%3A0x1f1f1f1f1f1f1f1f!2sTarkarli%20Beach%2C%20Maharashtra!3m2!1d16.0147!2d73.4661!4m5!1s0x3bc00f1f1f1f1f1f%3A0x2f2f2f2f2f2f2f2f!2sDevbaug%2C%20Maharashtra!3m2!1d15.9847!2d73.4833!4m5!1s0x3bbf8c8c8c8c8c8c%3A0x3c3c3c3c3c3c3c3c!2sVijaydurg%20Fort%2C%20Maharashtra!3m2!1d16.5628!2d73.3342!4m5!1s0x3bbf95b3b3b3b3b3%3A0x4b4b4b4b4b4b4b4b!2sRatnagiri%2C%20Maharashtra!3m2!1d16.9944!2d73.3002!4m5!1s0x3bbfa5a5a5a5a5a5%3A0x5a5a5a5a5a5a5a5a!2sGanpatipule%2C%20Maharashtra!3m2!1d17.1441!2d73.2661!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin`;
+
+  // Direct Google Maps link for opening in new tab
+  const googleMapsDirectionsUrl = "https://www.google.com/maps/dir/Kolhapur,+Maharashtra/Panhala+Fort,+Maharashtra/Malvan,+Maharashtra/Sindhudurg+Fort,+Malvan/Tarkarli+Beach,+Maharashtra/Devbaug,+Maharashtra/Vijaydurg+Fort,+Maharashtra/Ratnagiri,+Maharashtra/Ganpatipule,+Maharashtra";
+
   return (
     <section id="journey" className="py-20 px-4 bg-background pattern-waves">
       <div className="container mx-auto max-w-6xl">
@@ -53,101 +49,79 @@ const JourneyMap = () => {
           </p>
         </motion.div>
 
-        {/* Interactive Map */}
+        {/* Google Maps Embed */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="relative bg-gradient-to-br from-ocean/5 to-accent/5 rounded-3xl p-6 sm:p-10 border border-border overflow-hidden"
+          className="relative bg-card rounded-3xl overflow-hidden border border-border shadow-elevated"
         >
-          {/* Map Background Pattern */}
-          <div className="absolute inset-0 opacity-30">
-            <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-              {/* Sea pattern */}
-              <defs>
-                <pattern id="waves" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
-                  <path d="M0 5 Q2.5 3 5 5 T10 5" fill="none" stroke="hsl(185 85% 31% / 0.3)" strokeWidth="0.3" />
-                </pattern>
-              </defs>
-              <rect x="30" y="0" width="70" height="100" fill="url(#waves)" />
-              
-              {/* Land mass */}
-              <path
-                d="M0 0 L30 0 L35 20 L40 40 L45 50 L50 60 L55 70 L60 75 L70 70 L80 60 L85 50 L90 40 L100 30 L100 100 L0 100 Z"
-                fill="hsl(140 25% 40% / 0.1)"
-                stroke="hsl(140 25% 40% / 0.3)"
-                strokeWidth="0.5"
-              />
-            </svg>
-          </div>
-
-          {/* Route Path */}
-          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <motion.path
-              d="M15 25 Q17 30 20 35 Q30 45 35 55 L40 60 Q42 64 45 68 L50 72 Q55 65 60 55 L70 45 L80 35"
-              fill="none"
-              stroke="hsl(18 100% 60%)"
-              strokeWidth="0.8"
-              strokeDasharray="2 1"
-              initial={{ pathLength: 0 }}
-              whileInView={{ pathLength: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 2, ease: "easeInOut" }}
+          <div className="relative w-full h-[400px] sm:h-[500px] md:h-[600px]">
+            <iframe
+              src={googleMapsEmbedUrl}
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Konkan Road Trip Route Map"
+              className="w-full h-full"
             />
-          </svg>
-
-          {/* Destinations */}
-          <div className="relative h-[400px] sm:h-[500px]">
-            {destinations.map((dest, index) => (
-              <motion.div
-                key={dest.id}
-                initial={{ opacity: 0, scale: 0 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="absolute group cursor-pointer"
-                style={{ left: `${dest.x}%`, top: `${dest.y}%`, transform: "translate(-50%, -50%)" }}
-              >
-                {/* Pulse Ring */}
-                <div className={`absolute inset-0 rounded-full ${typeColors[dest.type]} animate-ping opacity-30`} />
-                
-                {/* Marker */}
-                <div className={`relative w-4 h-4 sm:w-5 sm:h-5 rounded-full ${typeColors[dest.type]} shadow-lg flex items-center justify-center transition-transform group-hover:scale-125`}>
-                  <span className="text-[8px] sm:text-[10px] font-bold text-primary-foreground">{dest.day}</span>
-                </div>
-
-                {/* Tooltip */}
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none z-20">
-                  <div className="bg-card rounded-lg shadow-elevated p-3 text-center whitespace-nowrap border border-border">
-                    <p className="font-heading font-semibold text-sm text-foreground">{dest.name}</p>
-                    <p className="text-xs text-muted-foreground">{dest.description}</p>
-                    <p className="text-xs text-ocean font-medium mt-1">Day {dest.day}</p>
-                  </div>
-                  <div className="w-2 h-2 bg-card border-r border-b border-border rotate-45 mx-auto -mt-1" />
-                </div>
-              </motion.div>
-            ))}
-
-            {/* Map Icons */}
-            <Waves className="absolute text-ocean/20 w-8 h-8" style={{ left: "60%", top: "80%" }} />
-            <Mountain className="absolute text-forest/20 w-6 h-6" style={{ left: "10%", top: "40%" }} />
-            <Ship className="absolute text-ocean/20 w-6 h-6" style={{ left: "42%", top: "65%" }} />
           </div>
 
-          {/* Legend */}
-          <div className="flex flex-wrap justify-center gap-4 mt-6 pt-6 border-t border-border">
-            {[
-              { type: "temple", label: "Temple", icon: "🛕" },
-              { type: "fort", label: "Fort", icon: "🏰" },
-              { type: "beach", label: "Beach", icon: "🏖️" },
-              { type: "city", label: "City", icon: "🏘️" },
-            ].map((item) => (
-              <div key={item.type} className="flex items-center gap-2 text-sm text-muted-foreground">
-                <span className={`w-3 h-3 rounded-full ${typeColors[item.type as keyof typeof typeColors]}`} />
-                <span>{item.icon} {item.label}</span>
-              </div>
-            ))}
+          {/* Open in Google Maps Button */}
+          <div className="absolute top-4 right-4 z-10">
+            <a
+              href={googleMapsDirectionsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-card/95 backdrop-blur-sm text-foreground px-4 py-2 rounded-full shadow-lg border border-border hover:bg-card transition-colors text-sm font-medium"
+            >
+              <MapPin className="w-4 h-4 text-ocean" />
+              Open in Google Maps
+            </a>
+          </div>
+
+          {/* Destinations Legend */}
+          <div className="p-6 border-t border-border bg-gradient-to-br from-ocean/5 to-accent/5">
+            <h3 className="text-sm font-semibold text-foreground mb-4 text-center">Route Stops</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+              {destinations.map((dest, index) => (
+                <motion.div
+                  key={dest.name}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.3, delay: index * 0.05 }}
+                  className="flex items-center gap-2 bg-background/50 rounded-lg p-2 border border-border/50"
+                >
+                  <span className={`w-6 h-6 rounded-full ${typeColors[dest.type as keyof typeof typeColors]} flex items-center justify-center text-[10px] font-bold text-primary-foreground shrink-0`}>
+                    {dest.day}
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-xs font-medium text-foreground truncate">{dest.name}</p>
+                    <p className="text-[10px] text-muted-foreground truncate">{dest.description}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Legend */}
+            <div className="flex flex-wrap justify-center gap-4 mt-6 pt-4 border-t border-border/50">
+              {[
+                { type: "temple", label: "Temple", icon: "🛕" },
+                { type: "fort", label: "Fort", icon: "🏰" },
+                { type: "beach", label: "Beach", icon: "🏖️" },
+                { type: "city", label: "City", icon: "🏘️" },
+              ].map((item) => (
+                <div key={item.type} className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <span className={`w-3 h-3 rounded-full ${typeColors[item.type as keyof typeof typeColors]}`} />
+                  <span>{item.icon} {item.label}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </motion.div>
       </div>
