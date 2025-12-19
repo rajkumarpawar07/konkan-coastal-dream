@@ -59,7 +59,7 @@ const Hero = () => {
           className="mb-6 max-w-4xl text-4xl font-heading font-bold tracking-tight text-cream sm:text-5xl md:text-6xl lg:text-7xl"
         >
           Journey Through{" "}
-          <span className="text-gradient-sunset">Konkan</span>
+          <span className="text-gradient-ocean-sunset animate-gradient-wave">Konkan</span>
         </motion.h1>
 
         <motion.p

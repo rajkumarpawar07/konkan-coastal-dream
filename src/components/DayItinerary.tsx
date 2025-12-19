@@ -1,9 +1,27 @@
 import { motion } from "framer-motion";
 import { Clock, MapPin, Camera, Utensils, Car } from "lucide-react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 import mahalaxmiTemple from "@/assets/mahalaxmi-temple.jpg";
+import newPalace from "@/assets/new_palace.png";
+import rankalaLake from "@/assets/rankala_lake.png";
+import panhalaFort from "@/assets/panhala_fort.png";
+import jyotibaTemple from "@/assets/jyotiba_temple.png";
 import sindhudurgFort from "@/assets/sindhudurg-fort.jpg";
+import sindhudurgFortActual from "@/assets/sindhudurg.png";
+import tarkarliScuba from "@/assets/tarkarli_scuba.png";
 import devbaugSangam from "@/assets/devbaug-sangam.jpg";
-import ganpatipule from "@/assets/ganpatipule.jpg";
+import beach from "@/assets/beach.png";
+import vijaydurgFort from "@/assets/vijaydurg_fort.png";
+import kasheliBeach from "@/assets/kasheli_beach.png";
+import ganpatipuleTemple from "@/assets/ganpatipule.jpg";
+import arewareBeach from "@/assets/areware_beach.png";
 
 interface TimelineStop {
   time: string;
@@ -16,7 +34,7 @@ interface DayData {
   day: number;
   title: string;
   subtitle: string;
-  image: string;
+  images: string[];
   distance: string;
   highlight: string;
   highlightIcon: "camera" | "food";
@@ -28,97 +46,99 @@ const itinerary: DayData[] = [
   {
     day: 1,
     title: "Kolhapur City Tour",
-    subtitle: "Heritage & Spirituality",
-    image: mahalaxmiTemple,
+    subtitle: "Heritage & Food",
+    images: [mahalaxmiTemple, newPalace, rankalaLake],
     distance: "~30 km",
     highlight: "Must-try: Bawada Misal",
     highlightIcon: "food",
-    narrative: "Begin your odyssey in the spiritual heart of Kolhapur, where ancient temples whisper tales of devotion and royal palaces echo with Maratha glory.",
+    narrative: "Start early to beat the crowds at the temple and explore the royal heritage of Kolhapur.",
     stops: [
-      { time: "6:00 AM", place: "Shree Ambabai Temple", description: "Witness the divine morning aarti at this 9th-century Shakti Peeth", icon: "🛕" },
-      { time: "9:00 AM", place: "New Palace Museum", description: "Explore the magnificent Indo-Saracenic palace of the Chhatrapatis", icon: "🏛️" },
-      { time: "12:00 PM", place: "Kaneri Math", description: "Experience the unique portrayal of Indian village life and spirituality", icon: "🪷" },
-      { time: "5:00 PM", place: "Rankala Lake", description: "Stroll along the promenade as the sun paints the sky golden", icon: "🌅" },
+      { time: "7:00 AM", place: "Shree Ambabai Temple", description: "Start here early for darshan at this Shakti Peeth", icon: "🛕" },
+      { time: "10:30 AM", place: "Town Hall Museum", description: "Explore history near the temple (Check if open)", icon: "🏛️" },
+      { time: "12:00 PM", place: "New Palace", description: "Chhatrapati Shahu Museum in Kasaba Bawada", icon: "🏰" },
+      { time: "1:30 PM", place: "Bawada Misal", description: "Eat authentic spicy misal for lunch in Bawada", icon: "🌶️" },
+      { time: "3:00 PM", place: "Kaneri Math", description: "Siddhagiri Museum - unique village life sculptures", icon: "🚜" },
+      { time: "6:00 PM", place: "Rankala Lake", description: "Return to the city for the sunset view", icon: "🌅" },
+      { time: "7:30 PM", place: "Rajabhau Bhel", description: "End your day with famous bhel near the lake", icon: "😋" },
     ],
   },
   {
     day: 2,
-    title: "Hill Forts & Temples",
-    subtitle: "Maratha Legacy",
-    image: sindhudurgFort,
+    title: "The Hill Forts",
+    subtitle: "North-West Kolhapur",
+    images: [panhalaFort, jyotibaTemple],
     distance: "~60 km",
-    highlight: "Photography spot: Panhala Valley views",
+    highlight: "Explore the Teen Darwaza",
     highlightIcon: "camera",
-    narrative: "Ascend into the Western Ghats where mighty fortresses stand sentinel over misty valleys, bearing witness to centuries of Maratha valor.",
+    narrative: "Explore the majestic hill forts and temples located on the hills outside the city.",
     stops: [
-      { time: "6:00 AM", place: "Jyotiba Temple", description: "Perched at 3,124 feet with panoramic views of the Sahyadris", icon: "⛰️" },
-      { time: "10:00 AM", place: "Panhala Fort", description: "Maharashtra's largest fort with stunning Maratha architecture", icon: "🏰" },
-      { time: "2:00 PM", place: "Gaganbawda Ghat", description: "Drive through the breathtaking mountain passes towards the coast", icon: "🛣️" },
-      { time: "6:00 PM", place: "Arrive Malvan", description: "Check into your beachside accommodation", icon: "🏨" },
+      { time: "8:00 AM", place: "Jyotiba Temple", description: "Wadi Ratnagiri - panoramic views of Sahyadris", icon: "⛰️" },
+      { time: "11:00 AM", place: "Panhala Fort", description: "Explore Teen Darwaza, Tabak Udyan, and fort walls", icon: "🏰" },
     ],
   },
   {
     day: 3,
-    title: "Malvan & Sindhudurg",
-    subtitle: "Island Fortress",
-    image: sindhudurgFort,
-    distance: "~25 km",
-    highlight: "Don't miss: Scuba diving at Malvan",
+    title: "Malvan",
+    subtitle: "History & Sunset",
+    images: [sindhudurgFort, sindhudurgFortActual],
+    distance: "~160 km",
+    highlight: "Ferry to Sindhudurg Fort",
     highlightIcon: "camera",
-    narrative: "Navigate the azure waters to reach Shivaji's island fortress, where every stone tells a story of maritime prowess and architectural genius.",
+    narrative: "Drive from Kolhapur to Malvan via Gaganbawda Ghat and visit the island fortress.",
     stops: [
-      { time: "8:00 AM", place: "Sindhudurg Fort", description: "Ferry to the sea fort built by Chhatrapati Shivaji in 1664", icon: "⛴️" },
-      { time: "12:00 PM", place: "Malvani Lunch", description: "Savor authentic coastal cuisine - surmai, prawns, sol kadhi", icon: "🦐" },
-      { time: "3:00 PM", place: "Rock Garden", description: "Relax at this picturesque coastal garden with rocky outcrops", icon: "🌿" },
-      { time: "5:00 PM", place: "Chivla Beach", description: "Watch the fishing boats return with the day's catch", icon: "🏖️" },
+      { time: "12:00 PM", place: "Reach Malvan", description: "Drive via Gaganbawda Ghat (approx. 3.5 - 4 hours)", icon: "🚗" },
+      { time: "2:00 PM", place: "Sindhudurg Fort", description: "Ferry from Dandi Beach (Finish by 4:00 PM)", icon: "⛴️" },
+      { time: "5:30 PM", place: "Rock Garden", description: "Relaxing walk and sunset near Malvan jetty", icon: "🌅" },
     ],
   },
   {
     day: 4,
     title: "Tarkarli & Devbaug",
-    subtitle: "Water Paradise",
-    image: devbaugSangam,
-    distance: "~35 km",
-    highlight: "Adventure: Scuba & water sports",
+    subtitle: "Water Sports Day",
+    images: [beach, devbaugSangam],
+    distance: "~20 km",
+    highlight: "Scuba Diving & Watersports",
     highlightIcon: "camera",
-    narrative: "Feel the rhythm of Konkan as river meets sea at Devbaug, where crystal waters reveal an underwater world of coral and colorful fish.",
+    narrative: "A day dedicated to water adventures and the magical confluence of river and sea.",
     stops: [
-      { time: "7:00 AM", place: "Tarkarli Beach", description: "India's premier scuba destination with 20-feet visibility", icon: "🤿" },
-      { time: "11:00 AM", place: "Devbaug Sangam", description: "Witness the magical confluence of Karli River and Arabian Sea", icon: "🌊" },
-      { time: "2:00 PM", place: "Tsunami Island", description: "Banana boats, bumper rides, and jet ski adventures", icon: "🏄" },
-      { time: "5:00 PM", place: "Dolphin Spotting", description: "Evening boat ride to spot playful dolphins", icon: "🐬" },
+      { time: "8:00 AM", place: "Tarkarli Beach", description: "Head here early for Scuba Diving", icon: "🤿" },
+      { time: "11:00 AM", place: "Devbaug Beach", description: "Drive to the tip where river meets sea (Sangam)", icon: "🌊" },
+      { time: "2:00 PM", place: "Tsunami Island", description: "Boat safari and water rides", icon: "🏄" },
     ],
   },
   {
     day: 5,
     title: "South Ratnagiri",
-    subtitle: "Coastal Heritage",
-    image: ganpatipule,
+    subtitle: "Forts & Hidden Beaches",
+    images: [vijaydurgFort, kasheliBeach],
     distance: "~120 km",
-    highlight: "Hidden gem: Kasheli Beach temple",
+    highlight: "Hidden gem: Kasheli Beach",
     highlightIcon: "camera",
-    narrative: "Journey northward along the coast, discovering hidden beaches crowned with ancient temples and forts that once ruled the seas.",
+    narrative: "Journey northward along the Coastal Highway discovering ancient forts and hidden beaches.",
     stops: [
-      { time: "7:00 AM", place: "Vijaydurg Fort", description: "The 'Gibraltar of the East' - largest sea fort on the coast", icon: "🏰" },
-      { time: "11:00 AM", place: "Kasheli Beach", description: "Ancient Kanakaditya Temple overlooking dramatic cliffs", icon: "🛕" },
-      { time: "2:00 PM", place: "Wayangani Beach", description: "Famous crescent-shaped beach with golden sands", icon: "🏖️" },
-      { time: "5:00 PM", place: "Ratnagiri City", description: "Evening at the birthplace of Alphonso mangoes", icon: "🥭" },
+      { time: "8:00 AM", place: "Vijaydurg Fort", description: "The southernmost tip of Ratnagiri district", icon: "🏰" },
+      { time: "11:00 AM", place: "Purngad Fort", description: " scenic fort on the way north", icon: "🧱" },
+      { time: "1:00 PM", place: "Kasheli Beach", description: "Visit Kanakaditya Temple and cliff view", icon: "🛕" },
+      { time: "3:00 PM", place: "Wayangani Beach", description: "Known for its curved shoreline", icon: "🏖️" },
+      { time: "5:30 PM", place: "Ratnadurg Fort", description: "Sunset at Bhagwati temple inside the fort", icon: "🌅" },
     ],
   },
   {
     day: 6,
-    title: "Ganpatipule & Return",
-    subtitle: "Sacred Shores",
-    image: ganpatipule,
-    distance: "~50 km",
-    highlight: "Spiritual: Swayambhu Ganesh darshan",
+    title: "North Ratnagiri",
+    subtitle: "Ganpatipule & Jaigad",
+    images: [ganpatipuleTemple, arewareBeach],
+    distance: "~80 km",
+    highlight: "Swayambhu Ganesh Darshan",
     highlightIcon: "camera",
-    narrative: "Conclude your coastal odyssey at the sacred shores of Ganpatipule, where the 400-year-old Swayambhu Ganesh blesses every traveler.",
+    narrative: "Visit sacred temples and scenic spots on your way back towards Mumbai/Pune.",
     stops: [
-      { time: "6:00 AM", place: "Ganpatipule Temple", description: "Home to the miraculous self-manifested Ganesh idol", icon: "🙏" },
-      { time: "9:00 AM", place: "Ganpatipule Beach", description: "2km pristine beach with the temple as backdrop", icon: "🏖️" },
-      { time: "11:00 AM", place: "Prachin Konkan Museum", description: "Step back in time through recreated village scenes", icon: "🏘️" },
-      { time: "2:00 PM", place: "Journey Home", description: "Carry endless memories of Konkan's magic", icon: "🚗" },
+      { time: "8:00 AM", place: "Areware Beach", description: "Viewpoint and Zipline activity", icon: "🧗" },
+      { time: "10:00 AM", place: "Ganpatipule Temple", description: "Darshan of Swayambhu Ganesh", icon: "🙏" },
+      { time: "11:30 AM", place: "Prachin Konkan Museum", description: "Opposite Ganpatipule bus stand", icon: "🏺" },
+      { time: "2:00 PM", place: "Jai Vinayak Temple", description: "Beautiful modern temple with pagoda-style roof", icon: "🏯" },
+      { time: "3:30 PM", place: "Gemini Pond", description: "Located near JSW/Jaigad area", icon: "💧" },
+      { time: "5:00 PM", place: "Savatkada Waterfall", description: "Visit near Chiplun if driving towards Mumbai", icon: "🌊" },
     ],
   },
 ];
@@ -158,14 +178,39 @@ const DayItinerary = () => {
             >
               {/* Image Section */}
               <div className="lg:w-1/2">
-                <div className="relative h-full min-h-[300px] rounded-3xl overflow-hidden img-zoom">
-                  <img
-                    src={day.image}
-                    alt={`Day ${day.day}: ${day.title}`}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-transparent to-transparent" />
-                  
+                <div className="relative h-full min-h-[300px] rounded-3xl overflow-hidden img-zoom group">
+                  <Carousel
+                    className="w-full h-full"
+                    opts={{ loop: true }}
+                    plugins={[
+                      Autoplay({
+                        delay: 3000,
+                      }),
+                    ]}
+                  >
+                    <CarouselContent className="-ml-0 h-full">
+                      {day.images.map((image, imgIndex) => (
+                        <CarouselItem key={imgIndex} className="pl-0 h-full">
+                          <div className="h-full w-full overflow-hidden">
+                            <img
+                              src={image}
+                              alt={`${day.title} - Image ${imgIndex + 1}`}
+                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            />
+                          </div>
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                    {day.images.length > 1 && (
+                      <>
+                        <CarouselPrevious className="left-4 bg-black/20 hover:bg-black/40 border-none text-white backdrop-blur-sm" />
+                        <CarouselNext className="right-4 bg-black/20 hover:bg-black/40 border-none text-white backdrop-blur-sm" />
+                      </>
+                    )}
+                  </Carousel>
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-transparent to-transparent pointer-events-none" />
+
                   {/* Day Badge */}
                   <div className="absolute top-4 left-4">
                     <div className="day-badge">
@@ -245,11 +290,11 @@ const DayItinerary = () => {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </motion.div >
           ))}
-        </div>
-      </div>
-    </section>
+        </div >
+      </div >
+    </section >
   );
 };
 
