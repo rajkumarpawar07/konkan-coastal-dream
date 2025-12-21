@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
-import { 
-  Calendar, 
-  Car, 
-  Sun, 
-  AlertTriangle, 
-  Clock, 
-  Camera, 
+import {
+  Calendar,
+  Car,
+  Sun,
+  AlertTriangle,
+  Clock,
+  Camera,
   Droplets,
   MapPin,
   Ship
@@ -151,7 +151,7 @@ const PracticalInfo = () => {
             {[
               { label: "Total Distance", value: "400+ km" },
               { label: "Best Season", value: "Oct - Mar" },
-              { label: "Avg. Daily Budget", value: "₹3,000-5,000" },
+              { label: "Avg. Daily Budget", value: "₹8,000-10,000" },
               { label: "Ideal Duration", value: "6 Days" },
             ].map((stat) => (
               <div key={stat.label}>

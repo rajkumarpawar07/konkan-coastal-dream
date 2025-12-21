@@ -7,6 +7,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { Button } from "@/components/ui/button";
 import Autoplay from "embla-carousel-autoplay";
 import mahalaxmiTemple from "@/assets/mahalaxmi-temple.jpg";
 import newPalace from "@/assets/new_palace.png";
@@ -19,9 +20,11 @@ import tarkarliScuba from "@/assets/tarkarli_scuba.png";
 import devbaugSangam from "@/assets/devbaug-sangam.jpg";
 import beach from "@/assets/beach.png";
 import vijaydurgFort from "@/assets/vijaydurg_fort.png";
+import wayanganiBeach from "@/assets/wayangani_beach.png";
 import kasheliBeach from "@/assets/kasheli_beach.png";
 import ganpatipuleTemple from "@/assets/ganpatipule.jpg";
 import arewareBeach from "@/assets/areware_beach.png";
+import geminiPond from "@/assets/gemini_pond.png";
 
 interface TimelineStop {
   time: string;
@@ -40,6 +43,7 @@ interface DayData {
   highlightIcon: "camera" | "food";
   stops: TimelineStop[];
   narrative: string;
+  mapUrl?: string;
 }
 
 const itinerary: DayData[] = [
@@ -48,10 +52,11 @@ const itinerary: DayData[] = [
     title: "Kolhapur City Tour",
     subtitle: "Heritage & Food",
     images: [mahalaxmiTemple, newPalace, rankalaLake],
-    distance: "~30 km",
+    distance: "~280 km",
     highlight: "Must-try: Bawada Misal",
     highlightIcon: "food",
     narrative: "Start early to beat the crowds at the temple and explore the royal heritage of Kolhapur.",
+    mapUrl: "https://maps.app.goo.gl/eMZ3GqATTga7CqWs7",
     stops: [
       { time: "7:00 AM", place: "Shree Ambabai Temple", description: "Start here early for darshan at this Shakti Peeth", icon: "🛕" },
       { time: "10:30 AM", place: "Town Hall Museum", description: "Explore history near the temple (Check if open)", icon: "🏛️" },
@@ -67,10 +72,11 @@ const itinerary: DayData[] = [
     title: "The Hill Forts",
     subtitle: "North-West Kolhapur",
     images: [panhalaFort, jyotibaTemple],
-    distance: "~60 km",
+    distance: "~40 km",
     highlight: "Explore the Teen Darwaza",
     highlightIcon: "camera",
     narrative: "Explore the majestic hill forts and temples located on the hills outside the city.",
+    mapUrl: "https://maps.app.goo.gl/eMZ3GqATTga7CqWs7",
     stops: [
       { time: "8:00 AM", place: "Jyotiba Temple", description: "Wadi Ratnagiri - panoramic views of Sahyadris", icon: "⛰️" },
       { time: "11:00 AM", place: "Panhala Fort", description: "Explore Teen Darwaza, Tabak Udyan, and fort walls", icon: "🏰" },
@@ -81,10 +87,11 @@ const itinerary: DayData[] = [
     title: "Malvan",
     subtitle: "History & Sunset",
     images: [sindhudurgFort, sindhudurgFortActual],
-    distance: "~160 km",
+    distance: "~200 km",
     highlight: "Ferry to Sindhudurg Fort",
     highlightIcon: "camera",
     narrative: "Drive from Kolhapur to Malvan via Gaganbawda Ghat and visit the island fortress.",
+    mapUrl: "https://maps.app.goo.gl/d4wFSFbcNMgkmZKn9",
     stops: [
       { time: "12:00 PM", place: "Reach Malvan", description: "Drive via Gaganbawda Ghat (approx. 3.5 - 4 hours)", icon: "🚗" },
       { time: "2:00 PM", place: "Sindhudurg Fort", description: "Ferry from Dandi Beach (Finish by 4:00 PM)", icon: "⛴️" },
@@ -100,6 +107,7 @@ const itinerary: DayData[] = [
     highlight: "Scuba Diving & Watersports",
     highlightIcon: "camera",
     narrative: "A day dedicated to water adventures and the magical confluence of river and sea.",
+    mapUrl: "https://maps.app.goo.gl/d4wFSFbcNMgkmZKn9",
     stops: [
       { time: "8:00 AM", place: "Tarkarli Beach", description: "Head here early for Scuba Diving", icon: "🤿" },
       { time: "11:00 AM", place: "Devbaug Beach", description: "Drive to the tip where river meets sea (Sangam)", icon: "🌊" },
@@ -110,11 +118,12 @@ const itinerary: DayData[] = [
     day: 5,
     title: "South Ratnagiri",
     subtitle: "Forts & Hidden Beaches",
-    images: [vijaydurgFort, kasheliBeach],
-    distance: "~120 km",
+    images: [vijaydurgFort, kasheliBeach, wayanganiBeach],
+    distance: "~200 km",
     highlight: "Hidden gem: Kasheli Beach",
     highlightIcon: "camera",
     narrative: "Journey northward along the Coastal Highway discovering ancient forts and hidden beaches.",
+    mapUrl: "https://maps.app.goo.gl/bbDBEakU5tmL9FYk8",
     stops: [
       { time: "8:00 AM", place: "Vijaydurg Fort", description: "The southernmost tip of Ratnagiri district", icon: "🏰" },
       { time: "11:00 AM", place: "Purngad Fort", description: " scenic fort on the way north", icon: "🧱" },
@@ -127,11 +136,12 @@ const itinerary: DayData[] = [
     day: 6,
     title: "North Ratnagiri",
     subtitle: "Ganpatipule & Jaigad",
-    images: [ganpatipuleTemple, arewareBeach],
-    distance: "~80 km",
+    images: [ganpatipuleTemple, arewareBeach, geminiPond],
+    distance: "~44 km + 300 km",
     highlight: "Swayambhu Ganesh Darshan",
     highlightIcon: "camera",
     narrative: "Visit sacred temples and scenic spots on your way back towards Mumbai/Pune.",
+    mapUrl: "https://maps.app.goo.gl/Vy2i5424WUTjtQLNA",
     stops: [
       { time: "8:00 AM", place: "Areware Beach", description: "Viewpoint and Zipline activity", icon: "🧗" },
       { time: "10:00 AM", place: "Ganpatipule Temple", description: "Darshan of Swayambhu Ganesh", icon: "🙏" },
@@ -284,9 +294,25 @@ const DayItinerary = () => {
                       <Car className="w-4 h-4" />
                       <span>Distance: {day.distance}</span>
                     </div>
-                    <button className="text-sm font-medium text-ocean hover:text-ocean-light transition-colors story-link">
-                      View Details →
-                    </button>
+                    {day.mapUrl ? (
+                      <Button asChild className="bg-gradient-ocean text-white shadow-lg hover:shadow-glow-ocean hover:-translate-y-0.5 transition-all duration-300 rounded-full px-6 group border-none">
+                        <a
+                          href={day.mapUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2"
+                        >
+                          <MapPin className="w-4 h-4" />
+                          View Route
+                          <span className="group-hover:translate-x-1 transition-transform">→</span>
+                        </a>
+                      </Button>
+                    ) : (
+                      <Button className="bg-gradient-ocean text-white shadow-lg hover:shadow-glow-ocean hover:-translate-y-0.5 transition-all duration-300 rounded-full px-6 group border-none">
+                        View Details
+                        <span className="group-hover:translate-x-1 transition-transform ml-2">→</span>
+                      </Button>
+                    )}
                   </div>
                 </div>
               </div>

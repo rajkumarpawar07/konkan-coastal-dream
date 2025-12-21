@@ -51,7 +51,7 @@ const JourneyMap = () => {
 
   // Google Maps directions URL starting from Pune
   const googleMapsDirectionsUrl =
-    "https://www.google.com/maps/dir/Pune,+Maharashtra/Kolhapur,+Maharashtra/Panhala+Fort,+Maharashtra/Malvan,+Maharashtra/Sindhudurg+Fort,+Malvan/Tarkarli+Beach,+Maharashtra/Devbaug,+Maharashtra/Vijaydurg+Fort,+Maharashtra/Ratnagiri,+Maharashtra/Ganpatipule,+Maharashtra";
+    "https://maps.app.goo.gl/mCkQsb1aNb74Cec26";
 
   // Center map on the route
   const mapCenter: LatLngExpression = [16.5, 73.8];
@@ -107,6 +107,7 @@ const JourneyMap = () => {
                   weight: 4,
                   opacity: 0.8,
                   dashArray: "10, 10",
+                  className: "route-animated"
                 }}
               />
 
