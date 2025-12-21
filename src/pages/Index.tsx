@@ -2,6 +2,7 @@ import Navigation from "@/components/Navigation";
 import ScrollProgress from "@/components/ScrollProgress";
 import Hero from "@/components/Hero";
 import JourneyMap from "@/components/JourneyMap";
+import TravelSquad from "@/components/TravelSquad";
 import DayItinerary from "@/components/DayItinerary";
 import FoodCulture from "@/components/FoodCulture";
 import PracticalInfo from "@/components/PracticalInfo";
@@ -19,6 +20,10 @@ const Index = () => {
         
         <section id="journey">
           <JourneyMap />
+        </section>
+
+        <section id="squad">
+          <TravelSquad />
         </section>
         
         <section id="itinerary">
