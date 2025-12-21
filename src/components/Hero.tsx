@@ -62,14 +62,6 @@ const Hero = () => {
           <span className="text-gradient-ocean-sunset animate-gradient-wave">Konkan</span>
         </motion.h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="mb-8 max-w-2xl text-lg text-cream/90 sm:text-xl md:text-2xl font-light"
-        >
-          Where History Meets the Arabian Sea
-        </motion.p>
 
         <motion.p
           initial={{ opacity: 0, y: 30 }}

@@ -33,12 +33,6 @@ const foodItems = [
     location: "Ratnagiri",
     mustTry: false,
   },
-  {
-    name: "Alphonso Aamras",
-    description: "The king of mangoes in its purest form - available only in season (April-June)",
-    location: "Ratnagiri",
-    mustTry: true,
-  },
 ];
 
 const FoodCulture = () => {
