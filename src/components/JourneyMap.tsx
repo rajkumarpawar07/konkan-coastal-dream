@@ -54,7 +54,7 @@ const JourneyMap = () => {
     "https://maps.app.goo.gl/mCkQsb1aNb74Cec26";
 
   // Center map on the route
-  const mapCenter: LatLngExpression = [16.5, 73.8];
+  const mapCenter: LatLngExpression = [17.2441, 74.2661];
 
   return (
     <section id="journey" className="py-20 px-4 bg-background pattern-waves">
@@ -149,32 +149,46 @@ const JourneyMap = () => {
 
           {/* Destinations Legend */}
           <div className="p-6 border-t border-border bg-gradient-to-br from-ocean/5 to-accent/5">
-            <h3 className="text-sm font-semibold text-foreground mb-4 text-center">Route Stops</h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-              {destinations.map((dest, index) => (
-                <motion.div
-                  key={dest.name}
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                  className="flex items-center gap-2 bg-background/50 rounded-lg p-2 border border-border/50"
-                >
-                  <span
-                    className={`w-6 h-6 rounded-full ${typeLabels[dest.type as keyof typeof typeLabels].color} flex items-center justify-center text-[10px] font-bold text-primary-foreground shrink-0`}
+            <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-6 text-center">Route Stops</h3>
+            <div className="flex flex-wrap justify-center gap-3">
+              {destinations.map((dest, index) => {
+                const typeInfo = typeLabels[dest.type as keyof typeof typeLabels];
+                return (
+                  <motion.div
+                    key={dest.name}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                    className="group flex items-center gap-3 pl-2 pr-4 py-2 rounded-full border border-border/50 bg-card/40 backdrop-blur-md hover:bg-card/80 transition-all duration-300 hover:shadow-lg hover:border-ocean/30 cursor-default"
                   >
-                    {dest.day === 0 ? "•" : dest.day}
-                  </span>
-                  <div className="min-w-0">
-                    <p className="text-xs font-medium text-foreground truncate">{dest.name}</p>
-                    <p className="text-[10px] text-muted-foreground truncate">{dest.description}</p>
-                  </div>
-                </motion.div>
-              ))}
+                    <div
+                      className={`w-8 h-8 rounded-full ${typeInfo.color} flex items-center justify-center text-sm shadow-sm shrink-0`}
+                    >
+                      {typeInfo.icon}
+                    </div>
+
+                    <div className="flex flex-col min-w-[80px]">
+                      <div className="flex items-center gap-2">
+                        <span className="font-bold text-xs text-foreground group-hover:text-ocean transition-colors">
+                          {dest.name}
+                        </span>
+                        <span className="text-[9px] font-semibold text-muted-foreground/80 bg-background/50 px-1.5 rounded-full border border-border/30">
+                          {dest.day === 0 ? "START" : `D${dest.day}`}
+                        </span>
+                      </div>
+                      <p className="text-[9px] text-muted-foreground truncate max-w-[120px] group-hover:max-w-[200px] transition-all duration-300">
+                        {dest.description}
+                      </p>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
 
             {/* Legend */}
-            <div className="flex flex-wrap justify-center gap-4 mt-6 pt-4 border-t border-border/50">
+            {/* <div className="flex flex-wrap justify-center gap-4 mt-6 pt-4 border-t border-border/50">
               {Object.entries(typeLabels).map(([type, info]) => (
                 <div key={type} className="flex items-center gap-2 text-sm text-muted-foreground">
                   <span className={`w-3 h-3 rounded-full ${info.color}`} />
@@ -183,7 +197,7 @@ const JourneyMap = () => {
                   </span>
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
         </motion.div>
       </div>
