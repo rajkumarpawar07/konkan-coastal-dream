@@ -1,207 +1,69 @@
-import { motion } from "framer-motion";
-import { Navigation, MapPin, ExternalLink } from "lucide-react";
-import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet";
-import { Icon, LatLngExpression } from "leaflet";
-import "leaflet/dist/leaflet.css";
+import React from 'react';
+import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
-// Fix for default marker icons in Leaflet with Vite
-const createCustomIcon = (color: string) => {
-  return new Icon({
-    iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`,
-    shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41],
+// Fix for Leaflet default icon issue in modern build environments
+// This ensures markers show up correctly by using CDN-hosted assets
+if (typeof window !== 'undefined') {
+  // @ts-ignore
+  delete L.Icon.Default.prototype._getIconUrl;
+  L.Icon.Default.mergeOptions({
+    iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+    iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
   });
-};
+}
 
-const markerColors: Record<string, string> = {
-  start: "green",
-  temple: "red",
-  fort: "gold",
-  beach: "blue",
-  city: "violet",
-};
+interface Location {
+  name: string;
+  position: [number, number];
+  description: string;
+}
 
-const destinations = [
-  { name: "Pune", day: 0, lat: 18.5204, lng: 73.8567, description: "Starting Point", type: "start" },
-  { name: "Kolhapur", day: 1, lat: 16.7050, lng: 74.2433, description: "Heritage & Spirituality", type: "temple" },
-  { name: "Panhala Fort", day: 2, lat: 16.8119, lng: 74.1089, description: "Maratha Stronghold", type: "fort" },
-  { name: "Malvan", day: 3, lat: 16.0607, lng: 73.4613, description: "Seafood Capital", type: "city" },
-  { name: "Sindhudurg Fort", day: 3, lat: 16.0486, lng: 73.4594, description: "Island Fortress", type: "fort" },
-  { name: "Tarkarli", day: 4, lat: 16.0147, lng: 73.4661, description: "Scuba Paradise", type: "beach" },
-  { name: "Devbaug", day: 4, lat: 15.9847, lng: 73.4833, description: "River Meets Sea", type: "beach" },
-  { name: "Vijaydurg Fort", day: 5, lat: 16.5628, lng: 73.3342, description: "Gibraltar of East", type: "fort" },
-  { name: "Ratnagiri", day: 5, lat: 16.9944, lng: 73.3002, description: "Coastal Heritage", type: "city" },
-  { name: "Ganpatipule", day: 6, lat: 17.1441, lng: 73.2661, description: "Sacred Shore", type: "temple" },
+const konkanRoute: Location[] = [
+  { name: 'Mumbai', position: [19.0760, 72.8777], description: 'The starting point of the Konkan journey.' },
+  { name: 'Alibaug', position: [18.6411, 72.8722], description: 'Famous for its beaches and historic forts.' },
+  { name: 'Murud-Janjira', position: [18.2847, 72.9633], description: 'Home to the unconquered sea fort.' },
+  { name: 'Ganpatipule', position: [17.1450, 73.2670], description: 'Pristine beaches and a famous Ganesha temple.' },
+  { name: 'Ratnagiri', position: [16.9902, 73.3120], description: 'Known for Alphonso mangoes and scenic coastlines.' },
+  { name: 'Malvan', position: [16.0514, 73.4687], description: 'Famous for Sindhudurg Fort and scuba diving.' },
+  { name: 'Tarkarli', position: [16.0350, 73.4910], description: 'A coral beach known for clear waters.' },
+  { name: 'Goa', position: [15.4909, 73.8278], description: 'The final destination with vibrant culture.' },
 ];
 
-const typeLabels = {
-  start: { label: "Start", icon: "🚗", color: "bg-forest" },
-  city: { label: "City", icon: "🏘️", color: "bg-ocean" },
-  fort: { label: "Fort", icon: "🏰", color: "bg-gold" },
-  beach: { label: "Beach", icon: "🏖️", color: "bg-accent" },
-  temple: { label: "Temple", icon: "🛕", color: "bg-terracotta" },
-};
-
-const JourneyMap = () => {
-  // Route coordinates for polyline
-  const routeCoordinates: LatLngExpression[] = destinations.map((d) => [d.lat, d.lng]);
-
-  // Google Maps directions URL starting from Pune
-  const googleMapsDirectionsUrl =
-    "https://maps.app.goo.gl/mCkQsb1aNb74Cec26";
-
-  // Center map on the route
-  const mapCenter: LatLngExpression = [17.2441, 74.2661];
+const JourneyMap: React.FC = () => {
+  const polylinePositions = konkanRoute.map(loc => loc.position);
+  const center: [number, number] = [17.5, 73.5];
 
   return (
-    <section id="journey" className="py-20 px-4 bg-background pattern-waves">
-      <div className="container mx-auto max-w-6xl">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <span className="inline-flex items-center gap-2 text-sm font-medium text-ocean mb-4">
-            <Navigation className="w-4 h-4" />
-            YOUR ROUTE
-          </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-foreground mb-4">
-            The <span className="text-gradient-ocean">Coastal</span> Journey
-          </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Trace the path from Pune through Kolhapur to the sacred shores of Ganpatipule
-          </p>
-        </motion.div>
-
-        {/* Leaflet Map */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="relative bg-card rounded-3xl overflow-hidden border border-border shadow-elevated"
-        >
-          <div className="relative w-full h-[400px] sm:h-[500px] md:h-[600px]">
-            <MapContainer
-              center={mapCenter}
-              zoom={8}
-              scrollWheelZoom={false}
-              className="w-full h-full z-0"
-              style={{ background: "#e8f4f8" }}
-            >
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-
-              {/* Route polyline */}
-              <Polyline
-                positions={routeCoordinates}
-                pathOptions={{
-                  color: "#FF6B35",
-                  weight: 4,
-                  opacity: 0.8,
-                  dashArray: "10, 10",
-                  className: "route-animated"
-                }}
-              />
-
-              {/* Markers for each destination */}
-              {destinations.map((dest) => (
-                <Marker
-                  key={dest.name}
-                  position={[dest.lat, dest.lng]}
-                  icon={createCustomIcon(markerColors[dest.type] || "blue")}
-                >
-                  <Popup>
-                    <div className="text-center p-1">
-                      <p className="font-bold text-sm">{dest.name}</p>
-                      <p className="text-xs text-gray-600">{dest.description}</p>
-                      {dest.day > 0 && (
-                        <span className="inline-block mt-1 px-2 py-0.5 bg-ocean/10 text-ocean text-xs rounded-full">
-                          Day {dest.day}
-                        </span>
-                      )}
-                    </div>
-                  </Popup>
-                </Marker>
-              ))}
-            </MapContainer>
-          </div>
-
-          {/* Open in Google Maps Button */}
-          <div className="absolute top-4 right-4 z-[1000]">
-            <a
-              href={googleMapsDirectionsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-card/95 backdrop-blur-sm text-foreground px-4 py-2 rounded-full shadow-lg border border-border hover:bg-card transition-colors text-sm font-medium"
-            >
-              <ExternalLink className="w-4 h-4 text-ocean" />
-              Open Route in Google Maps
-            </a>
-          </div>
-
-          {/* Destinations Legend */}
-          <div className="p-6 border-t border-border bg-gradient-to-br from-ocean/5 to-accent/5">
-            <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-6 text-center">Route Stops</h3>
-            <div className="flex flex-wrap justify-center gap-3">
-              {destinations.map((dest, index) => {
-                const typeInfo = typeLabels[dest.type as keyof typeof typeLabels];
-                return (
-                  <motion.div
-                    key={dest.name}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.3, delay: index * 0.05 }}
-                    className="group flex items-center gap-3 pl-2 pr-4 py-2 rounded-full border border-border/50 bg-card/40 backdrop-blur-md hover:bg-card/80 transition-all duration-300 hover:shadow-lg hover:border-ocean/30 cursor-default"
-                  >
-                    <div
-                      className={`w-8 h-8 rounded-full ${typeInfo.color} flex items-center justify-center text-sm shadow-sm shrink-0`}
-                    >
-                      {typeInfo.icon}
-                    </div>
-
-                    <div className="flex flex-col min-w-[80px]">
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-xs text-foreground group-hover:text-ocean transition-colors">
-                          {dest.name}
-                        </span>
-                        <span className="text-[9px] font-semibold text-muted-foreground/80 bg-background/50 px-1.5 rounded-full border border-border/30">
-                          {dest.day === 0 ? "START" : `D${dest.day}`}
-                        </span>
-                      </div>
-                      <p className="text-[9px] text-muted-foreground truncate max-w-[120px] group-hover:max-w-[200px] transition-all duration-300">
-                        {dest.description}
-                      </p>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-
-            {/* Legend */}
-            {/* <div className="flex flex-wrap justify-center gap-4 mt-6 pt-4 border-t border-border/50">
-              {Object.entries(typeLabels).map(([type, info]) => (
-                <div key={type} className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <span className={`w-3 h-3 rounded-full ${info.color}`} />
-                  <span>
-                    {info.icon} {info.label}
-                  </span>
-                </div>
-              ))}
-            </div> */}
-          </div>
-        </motion.div>
-      </div>
-    </section>
+    <div className="w-full h-[500px] rounded-xl overflow-hidden shadow-lg border border-gray-200 z-0">
+      <MapContainer 
+        center={center} 
+        zoom={7} 
+        scrollWheelZoom={false} 
+        style={{ height: '100%', width: '100%' }}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <Polyline 
+          positions={polylinePositions} 
+          pathOptions={{ color: '#3b82f6', weight: 4, opacity: 0.7, dashArray: '10, 10' }} 
+        />
+        {konkanRoute.map((loc, index) => (
+          <Marker key={index} position={loc.position}>
+            <Popup>
+              <div className="p-1 min-w-[150px]">
+                <h3 className="font-bold text-blue-600 text-lg">{loc.name}</h3>
+                <p className="text-sm text-gray-600 mt-1">{loc.description}</p>
+              </div>
+            </Popup>
+          </Marker>
+        ))}
+      </MapContainer>
+    </div>
   );
 };
 
