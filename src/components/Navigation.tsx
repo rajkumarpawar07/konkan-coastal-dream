@@ -6,8 +6,8 @@ const navItems = [
   { label: "Journey", href: "#journey" },
   { label: "Itinerary", href: "#itinerary" },
   { label: "Food", href: "#food" },
-  { label: "Gallery", href: "#gallery" },
   { label: "Plan", href: "#plan" },
+  { label: "Gallery", href: "#gallery" },
 ];
 
 const Navigation = () => {
